@@ -7,7 +7,7 @@
 
 # base directory where gentoo.periodic is installed
 BASE_DIR="/usr/local/sbin/gentoo.periodic"
-DST_EML="omega-prime@aci.on.ca"
+DST_EML=""
 NOW=$(date +%F)
 # temp file to output to, exported to the shell
 TMP_FILE="/tmp/$$.perioidic.tmp"
