@@ -1,0 +1,121 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2009.02.23.15.51.11;	author root;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.04.18.43.46;	author root;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.04.04.18.41.07;	author root;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.04.18.29.16;	author root;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.04.04.18.26.49;	author root;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@making check for rkhunter bin file far more simple.
+moving from complex awk/sort string to a simple which cmd.
+@
+text
+@#!/bin/bash
+#
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/rkhtr.sh,v 1.4 2008/04/04 18:43:46 root Exp root $
+#
+# rkhtr.sh - check for presence of rootkits on the system.
+#
+RKHTR=`which rkhunter`
+
+if [[ -z $RKHTR ]]; then 
+        echo " * rkhunter is not installed!"
+	echo " * Please install app-forensics/rkhunter"
+	echo ""
+else
+	echo " * Updating and running rkhunter"
+	$RKHTR --quiet --update && \
+	$RKHTR -c --cronjob --skip-keypress
+	echo "" 
+fi
+@
+
+
+1.4
+log
+@enabling updating
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/rkhtr.sh,v 1.3 2008/04/04 18:41:07 root Exp root $
+d7 1
+a7 1
+RKHTR=`whereis -b -B /usr/bin -f rkhunter|awk -F\: '{print $2}'|sed 's/^[ ]*//'`
+@
+
+
+1.3
+log
+@snapping off leading space on whereis
+got proper cmd line flags
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/rkhtr.sh,v 1.2 2008/04/04 18:29:16 root Exp root $
+d15 1
+a15 1
+	#$RKHTR --quiet --update && \
+@
+
+
+1.2
+log
+@fixed error.
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/rkhtr.sh,v 1.1 2008/04/04 18:26:49 root Exp root $
+d7 1
+a7 1
+RKHTR=`whereis -b -B /usr/bin/ -f rkhunter|awk -F\: '{print $2}'`
+d15 2
+a16 1
+	$RKHTR --quiet --update && $RKHTR -c --cronjob --skip-keypress
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/rkhtr.sh,v 1.1 2008/04/04 18:26:23 root Exp $
+a14 1
+	$
+@
