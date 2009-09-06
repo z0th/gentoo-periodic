@@ -1,0 +1,115 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2009.09.06.21.53.31;	author root;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2009.04.13.12.36.51;	author root;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2009.01.05.14.13.21;	author root;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2009.01.05.14.04.32;	author root;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2009.01.05.14.03.56;	author root;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@emerge not spitting out full errors. adding redirect of stderr
+to stdout to resolve and see full error output.
+@
+text
+@#!/bin/bash
+#
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/portage_update.sh,v 1.4 2009/04/13 12:36:51 root Exp root $ 
+#
+# portage-update.sh - update the portage tree
+#
+NOW=`date +%F\ %R`
+echo " * Updating the Portage tree: $NOW"
+/usr/bin/emerge --nospinner --color=n --quiet --sync
+echo " * Done!"
+echo ""
+echo " * Output of emerge --deep --update world"
+/usr/bin/emerge --nospinner --color=n --deep --update --pretend world > somefile 2>&1
+echo "" 
+
+@
+
+
+1.4
+log
+@removing --verbose from update display. makes it a bit confusing.
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/portage_update.sh,v 1.3 2009/01/05 14:13:21 root Exp root $ 
+d13 1
+a13 1
+/usr/bin/emerge --nospinner --color=n --deep --update --pretend world
+@
+
+
+1.3
+log
+@updaing text output.
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/portage_update.sh,v 1.2 2009/01/05 14:04:32 root Exp root $ 
+d13 1
+a13 1
+/usr/bin/emerge --nospinner --color=n --deep --update --pretend --verbose world
+@
+
+
+1.2
+log
+@adding --update flag to emerge.
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/portage_update.sh,v 1.1 2009/01/05 14:03:56 root Exp root $ 
+d12 1
+a12 1
+echo " * Output of emerge --deep world"
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/portage-update.sh,v 1.2 2008/04/02 14:42:05 root Exp $ 
+d13 1
+a13 1
+/usr/bin/emerge --nospinner --color=n --deep --pretend --verbose world
+@

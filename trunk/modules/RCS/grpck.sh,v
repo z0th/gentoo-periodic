@@ -1,0 +1,33 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2008.11.21.15.09.37;	author root;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@# $Header$
+#
+# grpck.sh - check for unused groups.
+#
+GRPFILE="/etc/group"
+
+echo " * Checking for unused groups..."
+/usr/sbin/grpck -r $GRPFILE
+echo ""
+
+@
