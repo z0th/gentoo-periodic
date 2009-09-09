@@ -1,0 +1,146 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2008.06.11.13.22.49;	author root;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.06.09.12.52.14;	author root;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.06.07.20.24.02;	author root;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.06.07.20.23.37;	author root;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.06.07.20.02.32;	author root;	state Exp;
+branches;
+next	;
+
+
+desc
+@..
+@
+
+
+1.5
+log
+@forgot to echo out the "running screens".
+@
+text
+@#!/bin/bash
+#
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/basic_sysinfo.sh,v 1.4 2008/06/09 12:52:14 root Exp root $
+#
+# basic_sysinfo.sh - the basics of stuff you want to know.
+#
+
+# disk usage
+disk_usage() {
+echo " * Current disk usage, all devices."
+df --all --human-readable
+echo ""
+}
+
+# current user logins
+current_logins() {
+echo " * Users currently logged in."
+w -f -s 
+echo "" 
+}
+
+# interface stats
+iface_stats() {
+echo " * Interface statistics."
+netstat -in
+echo ""
+}
+
+# listening processes
+listen_pids() {
+echo " * Listening processes."
+netstat --tcp --udp --program --listening --numeric-hosts --wide
+echo ""
+}
+
+# running screens
+running_screens() {
+echo " * Currently running screen sessions."
+ps ajx | fgrep SCREEN | grep -v "fgrep"
+echo ""
+}
+
+# call various things.
+disk_usage
+current_logins
+iface_stats
+listen_pids
+running_screens
+
+@
+
+
+1.4
+log
+@added screen output. fixed echo cmd.
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/basic_sysinfo.sh,v 1.3 2008/06/07 20:24:02 root Exp root $
+d38 1
+@
+
+
+1.3
+log
+@forgot an echo
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/basic_sysinfo.sh,v 1.2 2008/06/07 20:23:37 root Exp root $
+d36 6
+d47 2
+@
+
+
+1.2
+log
+@some additions.
+@
+text
+@d3 1
+a3 1
+# $Header$
+d33 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/disk_usage.sh,v 1.3 2008/04/02 14:36:07 root Exp $
+d5 1
+a5 1
+# disk_usage.sh - output disk usage.
+d7 3
+d13 27
+@
