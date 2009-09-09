@@ -1,6 +1,28 @@
-#!/bin/bash
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
 
-# $Header: /home/drew/bin/projects/modules/RCS/file_bkup.sh,v 1.1 2009/09/09 20:02:01 drew Exp $
+
+1.1
+date	2009.09.09.20.02.01;	author drew;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@#!/bin/bash
+
+# $Header$
 
 # file_bkup.sh - back up critical system files.
 
@@ -42,3 +64,4 @@ fi
 
 
 
+@
