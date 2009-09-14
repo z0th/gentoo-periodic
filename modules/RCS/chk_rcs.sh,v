@@ -1,0 +1,61 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2009.09.14.16.51.19;	author drew;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2009.09.14.16.50.19;	author drew;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@spelling.
+@
+text
+@#!/bin/bash
+#
+# $Header: /home/drew/bin/projects/gentoo-periodic/modules/RCS/chk_rcs.sh,v 1.1 2009/09/14 16:50:19 drew Exp drew $
+#
+# chk_rcs.sh - check the system for checked in/out files.
+#
+
+# is rcs even installed? 
+RCS_INSTALLED=`which rcs`
+
+if [ -n $RCS_INSTALLED ]; then
+	# find files 
+	find / -path '/home/' -prune -o -name '*,v' -type f -exec rlog -l -h {} \;
+else
+	echo " * RCS is not installed!"
+	echo " * Please install app-text/rcs or equivalent package!"
+	echo ""
+fi
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+# $Header$
+d16 1
+a16 1
+	echo " * Please install app-text/rcs or eqivalent package!"
+@
