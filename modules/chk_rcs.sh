@@ -9,8 +9,10 @@
 RCS_INSTALLED=`which rcs`
 
 if [ -n $RCS_INSTALLED ]; then
-	# find files 
+	# find files
+	echo " * Searching for RCS files."	
 	find / -path '/home/' -prune -o -name '*,v' -type f -exec rlog -l -h {} \;
+	echo ""
 else
 	echo " * RCS is not installed!"
 	echo " * Please install app-text/rcs or equivalent package!"
