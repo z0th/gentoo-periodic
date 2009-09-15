@@ -57,11 +57,21 @@ esac
 
 # file searching/removal done here
 for dir in $TMP_ROOT; do 
-	if [ ."${dir#/}" != ."$dir" -a -d $dir ]; then 
-		echo " * Searching for stale files in: $dir" 
-		find $dir $FILE_ARGS $IGNORE_FILE_ARGS $REMOVE $VERBOSE 
-		find $dir $DIR_ARGS $IGNORE_DIR_ARGS $REMOVE $VERBOSE
-		echo ""
+	if [ ."${dir#/}" != ."$dir" -a -d $dir ]; then
+		if [ $RM_FILES = "yes" ]; then 	
+			echo " * Searching for stale files in: $dir" 
+			find $dir $FILE_ARGS $IGNORE_FILE_ARGS $VERBOSE 
+			find $dir $DIR_ARGS $IGNORE_DIR_ARGS $VERBOSE
+			echo ""
+		elif [ $RM_FILES = "no" ]; 
+			echo " * Removing stale files in: $dir" 
+			find $dir $FILE_ARGS $IGNORE_FILE_ARGS $REMOVE $VERBOSE 
+			find $dir $DIR_ARGS $IGNORE_DIR_ARGS $REMOVE $VERBOSE
+			echo ""
+		else
+			echo " * Invalid Option: RM_FILES accepts yes/no option only!"
+			echo "" 
+		fi
 	fi
 done			
 
