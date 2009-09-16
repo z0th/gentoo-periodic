@@ -63,7 +63,7 @@ for dir in $TMP_ROOT; do
 			find $dir $FILE_ARGS $IGNORE_FILE_ARGS $VERBOSE 
 			find $dir $DIR_ARGS $IGNORE_DIR_ARGS $VERBOSE
 			echo ""
-		elif [ $RM_FILES = "no" ]; 
+		elif [ $RM_FILES = "no" ]; then 
 			echo " * Removing stale files in: $dir" 
 			find $dir $FILE_ARGS $IGNORE_FILE_ARGS $REMOVE $VERBOSE 
 			find $dir $DIR_ARGS $IGNORE_DIR_ARGS $REMOVE $VERBOSE
