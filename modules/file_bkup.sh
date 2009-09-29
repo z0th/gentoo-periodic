@@ -7,38 +7,51 @@
 # default files to be backed up
 def_bkup="/etc/passwd /etc/group /etc/shadow /etc/gshadow"
 # optional files to be backed up
-opt_bkup="/etc/hosts /etc/make.conf"
+opt_bkup="/etc/hosts /etc/make.conf /etc/mdadm.conf"
 # backup destination
-BKUP_DEST="/etc/backups"
+BKUP_DEST="/data/backup/daily-backup"
+# be verbose? 
+VERBOSE=no
 #
 BKUP_FILES="${def_bkup} ${opt_bkup}"
+# flags to hand to cp 
+CP="cp --preserve=all --parents --no-dereference --update"
+
+case ${VERBOSE} in 
+	[yY][eE][sS])
+		CP="${CP} --verbose"
+	;;
+	*)
+	continue
+	;;
+esac 
 
 # copy files f'n, if a dir then copy recursive
-# if a file then just copy, otherwise break.
+# if a file then just copy, otherwise exit.
 copy_files() {
 	for file in $BKUP_FILES; do
-		echo "   file copied: $file" 
 		if [ -d $file ]; then 
-			cp -R $file $BKUP_DEST
-		elif [ -f $file ] 
-			cp $file 	
+			$CP -R $file $BKUP_DEST
+		elif [ -f $file ]; then  
+			$CP $file $BKUP_DEST	
 		else 
-			   echo " * ERROR! File to be copied does not exist or is not a regular file or directory!"
-			   exit 1
-		fi	   
+			echo " * $file: File to be copied does not exist or is not a regular file or directory!"
+			exit 1
+		fi
+		echo "    file copied: $file" 
 	done
 }
 
-# make sure dest dir exists.
+# make sure dest dir exists then copy. 
 if [ -d $BKUP_DEST ]; then
 	echo " * Copying system files to: $BKUP_DEST"
 	copy_files
+	echo ""
 else
-	 echo " * Destionation does not exist! Creating..."
-	 echo " * Copying system files to: $BKUP_DEST"
-	 copy_files
+	echo " * Destionation does not exist! Creating..."
+	mkdir -p $BKUP_DEST
+	echo " * Copying system files to: $BKUP_DEST"
+	copy_files
+	echo ""
 fi
 	   
-
-
-
