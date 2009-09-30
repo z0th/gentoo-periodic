@@ -1,31 +1,42 @@
 #! /bin/bash
-# remove files? be verbose? 
+
+# TMP_CLEAN.SH - display/clean files out of temporary directories.
+
+# if enabled, then do stuff, otherwise do nothing.
+ENABLE=yes
+# file removal, verbosity, and pruning control 
 REMOVE=no
 VERBOSE=yes
 PRUNED=yes
-# look at dirs? how many days old? 
-SEARCH_DIRS="/var/tmp"
+# directories to search for stale files. before listing the many
+# temp directories here, it would be wise to read the Filesystem
+# Higharcy Standard at http://www.pathname.com/fhs/
+SEARCH_DIRS="/tmp"
+# how many days in the past to sart looking.
 DAYS=400
-# ignore files and dirs named... 
+# ignore files named... 
 IGNORE_NAMES=".X*-lock quota.user quota.group"
 # dont dip down into dirs named...
 # NOTE: this is a find regex and must match the
 # entire path!
 PRUNE_REGEX="/lock\|/etc-update-.*"
-# if enabled, then do stuff, otherwise do nothing.
-ENABLE=yes
 
 case "$ENABLE" in
+	# we are enabled.
 	[Yy][Ee][Ss])
 		if [ -z $SEARCH_DIRS ]; then
+
+			# check and make sure settings are present.
 			echo " * You must set the "SEARCH_DIRS" variable!"
+			exit 1
 			if [ -z $DAYS ]; then 
 				echo " * You must set the "DAYS" variable!"
 			fi
 			exit 1
 
 		else 
-	
+
+			# set up find arguments	
 			FIND_ARGS="-atime +$DAYS -mtime +$DAYS -ctime +$DAYS"
 			DIR_ARGS="-empty -mtime +$DAYS"
 
@@ -37,7 +48,7 @@ case "$ENABLE" in
 				}
 			fi
 
-
+			# are we pruning?
 			case "$PRUNED" in 
 				[Yy][Ee][Ss])
 					PRUNE="( ! -regex '${PRUNE_REGEX} ) -prune"
@@ -67,12 +78,13 @@ case "$ENABLE" in
 				;;
 			esac
 			
+			# search for stale files. 	
 			for dir in $SEARCH_DIRS; do 
 				if [ ."${dir#/}" != ."$dir" -a -d $dir ]; then 
 					cd $dir
 					echo " * File removal is set to: $(echo $REMOVE|tr [:lower:] [:upper:])"
 					echo " * Searching $dir for stale files more than $DAYS days old..." 
-					find . -depth -type f $FIND_ARGS $RM $PRINT
+					find . -depth -type f $PRUNE $FIND_ARGS $RM $PRINT
 					echo "" 
 					echo " * Searching $dir for stale directories more than $DAYS days old..." 
 					find . -not -name . -type d $PRUNE $DIR_ARGS $RM $PRINT
@@ -83,7 +95,8 @@ case "$ENABLE" in
 		fi 
 	;;
 	*)
-		echo " * ENABLED is set to NO."
+		# we are disabled, or broken.  	
+		echo " * ENABLED is set to NO or invalid option."
 		echo " * No cleaning of temporary directories preformed!"
 		echo ""
 		exit 1
