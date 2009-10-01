@@ -7,16 +7,24 @@
 
 # raid devices to consider
 RAID_DEV="/dev/md1 /dev/md2"
+DETAIL=no
 
+# basic output
 echo " * Status of RAID devices on this host"
 # output of /proc/mdstat
 echo " * Output of /proc/mdstat"
 cat /proc/mdstat 
+echo "" 
 
-# detail output
-for device in $RAID_DEV; do
-	echo " * Detail of $device"
-	mdadm --detail $device
-	echo "" 
-done
-
+# detailed output from mdadm 
+case "${DETAIL}" in
+	[yY][eE][sS])
+		for device in $RAID_DEV; do
+			echo " * Detail of $device:"
+			mdadm --detail $device
+			echo "" 
+		done
+	;;
+	*)
+	;; 
+esac
