@@ -7,11 +7,11 @@ ENABLE=yes
 # file removal, verbosity, and pruning control 
 REMOVE=no
 VERBOSE=yes
-PRUNED=yes
+PRUNED=no
 # directories to search for stale files. before listing the many
 # temp directories here, it would be wise to read the Filesystem
 # Higharcy Standard at http://www.pathname.com/fhs/
-SEARCH_DIRS="/tmp"
+SEARCH_DIRS="/tmp /test"
 # how many days in the past to sart looking.
 DAYS=400
 # ignore files named... 
@@ -19,12 +19,12 @@ IGNORE_NAMES=".X*-lock quota.user quota.group"
 # dont dip down into dirs named...
 # NOTE: this is a find regex and must match the
 # entire path!
-PRUNE_REGEX="/lock\|/etc-update-.*"
+PRUNE_REGEX="*/lock|/etc-update-.*"
 
 case "$ENABLE" in
 	# we are enabled.
 	[Yy][Ee][Ss])
-		if [ -z $SEARCH_DIRS ]; then
+		if [[ -z ${SEARCH_DIRS} ]]; then
 
 			# check and make sure settings are present.
 			echo " * You must set the "SEARCH_DIRS" variable!"
@@ -84,7 +84,7 @@ case "$ENABLE" in
 					cd $dir
 					echo " * File removal is set to: $(echo $REMOVE|tr [:lower:] [:upper:])"
 					echo " * Searching $dir for stale files more than $DAYS days old..." 
-					find . -depth -type f $PRUNE $FIND_ARGS $RM $PRINT
+					find . -type f $PRUNE $FIND_ARGS $RM $PRINT
 					echo "" 
 					echo " * Searching $dir for stale directories more than $DAYS days old..." 
 					find . -not -name . -type d $PRUNE $DIR_ARGS $RM $PRINT
