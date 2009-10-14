@@ -45,14 +45,12 @@ copy_files() {
 # make sure dest dir exists, if not then create and/or copy. 
 echo " * Backing up critical files and directories."
 if [ -d $BKUP_DEST ]; then
-	echo " * Destination $BKUP_DEST, proceeding with copy!" 
-	echo " * Copying files to: $BKUP_DEST"
+	echo " * Destination $BKUP_DEST found!" 
 	copy_files
 	echo ""
 else
 	echo " * Destination $BKUP_DEST does not exist! Creating..."
 	mkdir -p $BKUP_DEST
-	echo " * Copying files to: $BKUP_DEST"
 	copy_files
 	echo ""
 fi

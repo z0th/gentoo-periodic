@@ -11,8 +11,9 @@ PRUNED=no
 # directories to search for stale files. before listing the many
 # temp directories here, it would be wise to read the Filesystem
 # Higharcy Standard at http://www.pathname.com/fhs/
-SEARCH_DIRS="/tmp /test"
-# how many days in the past to sart looking.
+SEARCH_DIRS="/tmp"
+# how many days in the past to sart looking. 
+# this default value is to prevent accidental removal of critical files.
 DAYS=400
 # ignore files named... 
 IGNORE_NAMES=".X*-lock quota.user quota.group"
@@ -51,7 +52,7 @@ case "$ENABLE" in
 			# are we pruning?
 			case "$PRUNED" in 
 				[Yy][Ee][Ss])
-					PRUNE="( ! -regex '${PRUNE_REGEX} ) -prune"
+					PRUNE="( ! -regex '${PRUNE_REGEX}' ) -prune"
 				;;
 				*)
 					PRUNE=
@@ -79,10 +80,12 @@ case "$ENABLE" in
 			esac
 			
 			# search for stale files. 	
+			echo " * Temp Direcotry Clean-up"
+			echo " * File removal is set to: $(echo $REMOVE|tr [:lower:] [:upper:])"
+	
 			for dir in $SEARCH_DIRS; do 
 				if [ ."${dir#/}" != ."$dir" -a -d $dir ]; then 
 					cd $dir
-					echo " * File removal is set to: $(echo $REMOVE|tr [:lower:] [:upper:])"
 					echo " * Searching $dir for stale files more than $DAYS days old..." 
 					find . -type f $PRUNE $FIND_ARGS $RM $PRINT
 					echo "" 
