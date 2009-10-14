@@ -86,13 +86,16 @@ case "$ENABLE" in
 		fi
 
 		# executing tmpreaper command, with flags 
+		echo " * Tmpreaper is checking for stale files in $target..."
 		$tmpreap $verbose $test $showrm $runtime $protect $grace $target 	
+		echo ""
 	;;
 
 	*)
 		# disabled, or broken
 		echo " * ENABLES is set to NO or invalid option."
 		echo " * tmpreaper module did not execute."
+		echo "" 
 	;;
 esac
 
