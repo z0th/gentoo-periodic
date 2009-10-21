@@ -4,7 +4,6 @@
 
 # am i enabled? 
 ENABLE="YES"
-
 # target directories 
 target="/tmp" 
 # days old
@@ -17,8 +16,8 @@ test_only=YES
 show_rm=YES
 # maximum runtime in seconds, 0-55, 0 to disable.
 max_run=30
-# protect files, this is a shell pattern.
-protect_files=".X*-lock quota.user quota.group *.pid etc-update-*"
+# protect files, each quoted item is an individual shell pattern.
+protect_files=".X*-lock quota.user quota.group *.pid etc-update-* *lock"
 
 # locate tmpreaper on the system.
 tmpreap=$(which tmpreaper)
