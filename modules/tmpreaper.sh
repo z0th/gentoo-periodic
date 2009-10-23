@@ -5,7 +5,7 @@
 # am i enabled? 
 ENABLE="YES"
 # target directories 
-target="/tmp" 
+target="/tmp /var/tmp" 
 # days old
 grace_period=375d
 # verbosity
@@ -26,13 +26,21 @@ if [ -z $tmpreap ]; then
 	echo " * Please install app-admin/tmpreaper!"
 	echo "" 
 	exit 1 
-fi 
-# make sure something dumb isnt happening.
-if [ $target = / ]; then 
-	echo " * You should not run this on the root directory!"
-	exit 1
-fi 
- 
+fi
+
+# make sure something dumb isnt happening. 
+# loading the targets into an array for individual checks.
+target_check=( $target )
+for dir in ${target_check[*]}; do 
+	check=$(expr match "$dir" '\(^/$\|/bin\|/boot\|/dev\|/etc\|/home\|/lib\|/proc\|/sbin\|/sys\|/usr\\)\{1\}\/\{0,1\}')
+	if [ -n $check ]; then 
+		echo " You should not be looking for temp files in $dir! Exiting." 
+		echo ""
+		exit 1 
+	fi
+done
+
+# putting together the actual command based on given opts. 
 case "$ENABLE" in
 	[Yy][Ee][Ss])
 		# verbosity 
