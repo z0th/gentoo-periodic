@@ -5,9 +5,9 @@
 # am i enabled? 
 ENABLE="YES"
 # target directories 
-target="/tmp /var/tmp" 
+target="/tmp" 
 # days old
-grace_period=375d
+grace_period=3d
 # verbosity
 verbosity=NO
 # test only, do not remove files
@@ -32,9 +32,9 @@ fi
 # loading the targets into an array for individual checks.
 target_check=( $target )
 for dir in ${target_check[*]}; do 
-	check=$(expr match "$dir" '\(^/$\|/bin\|/boot\|/dev\|/etc\|/home\|/lib\|/proc\|/sbin\|/sys\|/usr\\)\{1\}\/\{0,1\}')
-	if [ -n $check ]; then 
-		echo " You should not be looking for temp files in $dir! Exiting." 
+	check=$(expr match "$dir" '^/$\|/bin\|/boot\|/dev\|/etc\|/lib\|/proc\|/sbin\|/sys\|/usr')
+	if [ $check -gt 0 ]; then 
+		echo " * You should not be looking for temp files in $dir! Exiting." 
 		echo ""
 		exit 1 
 	fi
