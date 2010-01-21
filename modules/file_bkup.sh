@@ -15,7 +15,7 @@ VERBOSE=no
 # cating vars together 
 BKUP_FILES="${def_bkup} ${opt_bkup}"
 # flags to hand to cp 
-CP="cp --preserve=all --parents --no-dereference --update"
+CP="cp --preserve=all --recursive --parents --no-dereference --update"
 
 case ${VERBOSE} in 
 	[yY][eE][sS])
