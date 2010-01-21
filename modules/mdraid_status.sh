@@ -7,24 +7,40 @@
 
 # raid devices to consider
 RAID_DEV="/dev/md1 /dev/md2"
-DETAIL=no
+# be verbose?
+RAID_VERBOSE=NO
 
-# basic output
-echo " * Status of RAID devices on this host"
-# output of /proc/mdstat
-echo " * Output of /proc/mdstat"
-cat /proc/mdstat 
-echo "" 
+# functions for status output
+raid_basic() {
+	cat /proc/mdstat
+	echo ""
+}
 
-# detailed output from mdadm 
-case "${DETAIL}" in
+raid_detail() {
+# detail output
+for device in $RAID_DEV; do
+	echo "    * Detail of $device:"
+	mdadm --detail $device
+	echo ""
+done
+}
+
+echo " * Current status of (mdadm) RAID devices on this host"
+# output based on options.
+case ${RAID_VERBOSE} in
 	[yY][eE][sS])
-		for device in $RAID_DEV; do
-			echo " * Detail of $device:"
-			mdadm --detail $device
-			echo "" 
-		done
+			 echo "    * Output of /proc/mdstat"
+			 raid_basic
+			 echo "    * Detail of RAID devices on this host"
+			 raid_detail
+	;;
+	[nN][oO])
+			 echo "    * Output of /proc/mdstat"
+			 raid_basic
 	;;
 	*)
-	;; 
+			 echo "mdraid_status.sh: Invalid argument! RAID_VERBOSE permits YES/NO options only!"
+			 echo ""
+	;;
 esac
+
