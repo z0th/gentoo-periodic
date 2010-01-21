@@ -8,8 +8,7 @@ NOW=`date +%F\ %R`
 echo " * Updating the Portage tree: $NOW"
 /usr/bin/emerge --nospinner --color=n --quiet --sync
 echo " * Done!"
-echo ""
 echo " * Output of emerge --deep --update world"
-/usr/bin/emerge --nospinner --color=n --deep --update --pretend world > somefile 2>&1
+/usr/bin/emerge --nospinner --color=n --deep --update --pretend world 
 echo "" 
 
