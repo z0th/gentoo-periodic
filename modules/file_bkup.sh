@@ -32,13 +32,13 @@ copy_files() {
 	for file in $BKUP_FILES; do
 		if [ -d $file ]; then 
 			$CP -R $file $BKUP_DEST
+			echo "   directory copied: $file"
 		elif [ -f $file ]; then  
-			$CP $file $BKUP_DEST	
+			$CP $file $BKUP_DEST
+			echo "   file copied: $file"
 		else 
-			echo " * $file: File to be copied does not exist or is not a regular file or directory!"
-			exit 1
+			echo "   ERROR! $file: File to be copied does not exist or is not a regular file or directory!"
 		fi
-		echo "    file copied: $file" 
 	done
 }
 
