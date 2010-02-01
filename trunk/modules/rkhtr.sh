@@ -7,12 +7,12 @@
 RKHTR=`which rkhunter`
 
 if [[ -z $RKHTR ]]; then 
-        echo " * rkhunter is not installed!"
+   echo " * rkhunter is not installed!"
 	echo " * Please install app-forensics/rkhunter"
 	echo ""
 else
 	echo " * Updating and running rkhunter"
-	$RKHTR --quiet --update && \
-	$RKHTR -c --cronjob --skip-keypress
+	$RKHTR --quiet --nocolors --update && \
+	$RKHTR --check --nocolors --skip-keypress
 	echo "" 
 fi
