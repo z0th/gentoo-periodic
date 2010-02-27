@@ -18,9 +18,13 @@ output_usage() {
 
 # this actually executes the script modules
 run_script() {
-        for script in `ls -1 $BASE_DIR/$PERIOD | sort -n`; do
-                sh $SCRIPTPATH/$PERIOD/$script >> $TMP_FILE
-        done
+	for script in `ls -1 $BASE_DIR/$PERIOD | sort -n`; do
+		sh $SCRIPTPATH/$PERIOD/$script >> $TMP_FILE
+	done
+	# just so we know that we are done.
+	echo "" >> $TMP_FILE
+	echo "  *** Reporting Complete!" >> $TMP_FILE
+	echo "" >> $TMP_FILE	
 }
 
 # base directory where gentoo.periodic is installed, EXPORT.
