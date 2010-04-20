@@ -2,10 +2,19 @@
 #
 # ssh_login.sh - find unsuccessful and successful logins 
 
+my_name=$(basename $0)
+# source config
+if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
+	. $INSTALL_DIR/gentoo.periodic.conf 
+else 
+	echo " * ERROR:" $my_name ": cannot source config!"
+	exit 0
+fi
+
 # verbose? summarize? 
-SSH_SUMMARY="YES"
+#SSH_SUMMARY="YES"
 # path to auth log
-SSH_AUTH_LOGS="/var/log/auth.log /var/log/auth.log.0"
+#SSH_AUTH_LOGS="/var/log/auth.log /var/log/auth.log.0"
 
 # date and temp file 
 SSH_TODAY=`date --date=yesterday "+%b %_d"`
