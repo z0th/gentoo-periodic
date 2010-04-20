@@ -23,7 +23,11 @@ ssh_badauth_remote_summary() {
 # possible ssh scanners
 echo " * Unsuccessful attempted logins."
 fgrep "Invalid user " $SSH_TMP_FILE | awk '{print $10}' > $SSH_CNT_FILE
-fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | awk '{print $7}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
+fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "but this does not map back to the address" \
+| awk '{print $12}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
+# there are two types of these BREAK IN lines
+fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "reverse mapping checking getaddrinfo for" \
+| awk '{print $12}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
 # count them up
 cat $SSH_CNT_FILE | sortip | uniq -c 
 echo ""
