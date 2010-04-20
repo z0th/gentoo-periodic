@@ -117,6 +117,20 @@ the script for later use. The echo command is used to output informational
 content before running commands. Another echo command is used at the end of
 the script for spacing and readability.
 
+For a newly written module to be able to read the config file, you must copy 
+these few lines of code into the top of the module.
+
+	my_name=$(basename $0)
+	# source config
+	if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
+		. $INSTALL_DIR/gentoo.periodic.conf
+	else
+		echo " * ERROR:" $my_name ": cannot source config!"
+		exit 0
+	fi
+
+This code references the script itself, as well as the configfile and install path.
+
 == FAQ ==
 
 Q: The name is GENTOO.periodic, is it designed for gentoo systems only? 
