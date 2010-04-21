@@ -4,20 +4,22 @@
 
 # file_bkup.sh - back up critical system files and directories.
 
-# default files/dirs to be backed up
-def_bkup="/etc/passwd /etc/group /etc/shadow /etc/gshadow"
-# optional files/dirs to be backed up
-opt_bkup="/etc/hosts /etc/make.conf /etc/mdadm.conf"
-# backup destination
-BKUP_DEST="/data/backup/daily-backup"
-# be verbose? 
-VERBOSE=no
-# cating vars together 
-BKUP_FILES="${def_bkup} ${opt_bkup}"
-# flags to hand to cp 
-CP="cp --preserve=all --recursive --parents --no-dereference --update"
+# ----------------
+# this code sources the config file! must be at the top of every module! 
+my_name=$(basename $0)
+# source config
+if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
+	. $INSTALL_DIR/gentoo.periodic.conf 
+else 
+	echo " * ERROR:" $my_name ": cannot source config!"
+	exit 0
+fi
+# ----------------
 
-case ${VERBOSE} in 
+# cating vars together 
+BKUP_FILES="${DEF_BKUP} ${OPT_BKUP}"
+
+case ${FILE_BKUP_VERBOSE} in 
 	[yY][eE][sS])
 		CP="${CP} --verbose"
 	;;
@@ -44,13 +46,13 @@ copy_files() {
 
 # make sure dest dir exists, if not then create and/or copy. 
 echo " * Backing up critical files and directories."
-if [ -d $BKUP_DEST ]; then
-	echo " * Destination $BKUP_DEST found!" 
+if [ -d $FILE_BKUP_DEST ]; then
+	echo " * Destination $FILE_BKUP_DEST found!" 
 	copy_files
 	echo ""
 else
-	echo " * Destination $BKUP_DEST does not exist! Creating..."
-	mkdir -p $BKUP_DEST
+	echo " * Destination $FILE_BKUP_DEST does not exist! Creating..."
+	mkdir -p $FILE_BKUP_DEST
 	copy_files
 	echo ""
 fi
