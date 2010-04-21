@@ -46,6 +46,7 @@ echo " * Unsucessful SUID attempts."
 fgrep "FAILED su for" $SSH_TMP_FILE
 echo ""
 # bad logins from permitted users
+echo " * Unsucessful PAM authentications."
 fgrep "error: PAM: Authentication failure for" $SSH_TMP_FILE
 echo ""
 }
