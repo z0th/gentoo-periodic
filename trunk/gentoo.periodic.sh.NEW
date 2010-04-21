@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # gentoo.peroidic.sh - run scripts in given dirs. this is 
-# designed to run out of crontab. 
+# designed to run out of crontab, and to source a file in
+# the directory it is installed to.
 
 # simple usage statement
 output_usage() {
@@ -51,8 +52,8 @@ BASE_DIR=$(readlink -f $0|xargs dirname)
 
 # option list and script runner handling. 
 # first, dont do anything unless the config is present
-if [ -e ./gentoo.periodic.conf ]; then
-	source ./gentoo.periodic.conf 
+if [ -e $BASE_DIR/gentoo.periodic.conf ]; then
+	source $BASE_DIR/gentoo.periodic.conf 
 	# then handle options
 	while getopts c:dmwysh OPT; do
 		case "$OPT" in 
