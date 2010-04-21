@@ -1,9 +1,6 @@
 #!/bin/bash
 #
-# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/basic_sysinfo.sh,v 1.5 2008/06/11 13:22:49 root Exp $
-#
 # basic_sysinfo.sh - the basics of stuff you want to know.
-#
 
 # disk usage
 disk_usage() {
