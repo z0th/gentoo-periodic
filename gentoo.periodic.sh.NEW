@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # gentoo.peroidic.sh - run scripts in given dirs. this is 
-# designed to run out of crontab, and to source a file in
-# the directory it is installed to.
+# designed to run out of crontab. 
 
 # simple usage statement
 output_usage() {
@@ -17,10 +16,20 @@ output_usage() {
         echo "   -h: this help message"
 }
 
+# base directory where gentoo.periodic is installed, EXPORT.
+self_ref() {
+        # full path to this script.
+        FULL_PATH=$(readlink -f $0)
+        # path to install dir.
+        INSTALL_DIR=$(dirname $FULL_PATH)
+	export FULL_PATH
+	export INSTALL_DIR 
+}
+
 # this actually executes the script modules
 run_script() {
-	for script in `ls -1 $BASE_DIR/$PERIOD | sort -n`; do
-		sh $SCRIPTPATH/$PERIOD/$script >> $TMP_FILE
+	for script in `ls -1 $INSTALL_DIR/$PERIOD | sort -n`; do
+		sh $PERIOD/$script >> $TMP_FILE
 	done
 	# just so we know that we are done.
 	echo "" >> $TMP_FILE
@@ -28,27 +37,9 @@ run_script() {
 	echo "" >> $TMP_FILE	
 }
 
-# base directory where gentoo.periodic is installed, EXPORT.
-self_ref() {
-        # full path to this script.
-        SCRIPT=$(readlink -f $0)
-        # path to install dir.
-        SCRIPTPATH=`dirname $SCRIPT`
-        export SCRIPT 
-        export SCRIPTPATH
-}
-
-# LOCAL VARIABLES! 
-# NOTE: some of these will need to be pulled out and sourced
-# from a .conf file [$BASE_DIR/gentoo-periodic.conf]. 
-#
 # base directory where gentoo.periodic is installed, LOCAL.
 BASE_DIR=$(readlink -f $0|xargs dirname)
-# todays date
-#NOW=$(date +%F)
-# temp file to output to, exported to the shell
-#TMP_FILE="/tmp/$$.perioidic.tmp"
-#export TMP_FILE
+export BASE_DIR
 
 # option list and script runner handling. 
 # first, dont do anything unless the config is present
@@ -59,6 +50,7 @@ if [ -e $BASE_DIR/gentoo.periodic.conf ]; then
 		case "$OPT" in 
 			c)      # run script manually 
 				SCRIPT="$OPTARG"
+				self_ref
 				sh -x $SCRIPT 
 				;;
 			d)      # daily
