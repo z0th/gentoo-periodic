@@ -16,6 +16,7 @@ else
 fi
 # ----------------
 
+
 # default files to back up.
 DEF_BKUP="/etc/crontab /etc/fstab /etc/group /etc/gshadow /etc/passwd /etc/shadow"
 # cating vars together 
@@ -23,7 +24,7 @@ BKUP_FILES="${DEF_BKUP} ${OPT_BKUP}"
 
 case ${FILE_BKUP_VERBOSE} in 
 	[yY][eE][sS])
-		CP="${CP} --verbose"
+		CP="${FILE_BKUP_CP} --verbose"
 	;;
 	*)
 	continue
