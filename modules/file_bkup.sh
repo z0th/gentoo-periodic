@@ -17,7 +17,7 @@ fi
 # ----------------
 
 # default files to back up.
-DEF_BKUP="/etc/{crontab,fstab,group,gshadow,passwd,shadow}"
+DEF_BKUP="/etc/crontab /etc/fstab /etc/group /etc/gshadow /etc/passwd /etc/shadow"
 # cating vars together 
 BKUP_FILES="${DEF_BKUP} ${OPT_BKUP}"
 
