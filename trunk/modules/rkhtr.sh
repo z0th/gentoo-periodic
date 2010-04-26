@@ -6,16 +6,28 @@
 #
 RKHTR=`which rkhunter`
 
+run_rkhunter(){
+	$RKHTR --quiet --nocolors --update && \
+	$RKHTR --check --nocolors --skip-keypress --report-warnings-only
+}
+
 if [[ -z $RKHTR ]]; then 
    echo " * rkhunter is not installed!"
 	echo " * Please install app-forensics/rkhunter"
 	echo ""
 else
 	echo " * Updating and running rkhunter"
-	echo " ** If this is the first run of rkhunter, you will need to"
-	echo " ** ensure your system is clean, then run 'rkhunter --proupd'"
-  	echo " ** 	and configure /etc/rkhunter.conf to your liking!"
-	$RKHTR --quiet --nocolors --update && \
-	$RKHTR --check --nocolors --skip-keypress --report-warnings-only
+	if [ -f /var/lib/rkhunter/db/rkhunter.dat ]; then 
+		# run rkhunter
+		run_rkhunter	
+	else
+		# first run message, then run rkhunter	
+		echo " ** If this is the first run of rkhunter, you will need to"
+		echo " ** ensure your system is clean, then run 'rkhunter --proupd'"
+		echo " ** to generate the rkhunter data file. You may also need to"
+		echo " ** configure system spesific options in /etc/rkhunter.conf!" 
+		run_rkunter			
+	fi
 	echo "" 
 fi
+
