@@ -12,6 +12,9 @@ if [[ -z $RKHTR ]]; then
 	echo ""
 else
 	echo " * Updating and running rkhunter"
+	echo " ** If this is the first run of rkhunter, you will need to"
+	echo " ** ensure your system is clean, then run 'rkhunter --proupd'"
+  	echo " ** 	and configure /etc/rkhunter.conf to your liking!"
 	$RKHTR --quiet --nocolors --update && \
 	$RKHTR --check --nocolors --skip-keypress --report-warnings-only
 	echo "" 
