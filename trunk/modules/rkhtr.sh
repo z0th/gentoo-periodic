@@ -13,6 +13,6 @@ if [[ -z $RKHTR ]]; then
 else
 	echo " * Updating and running rkhunter"
 	$RKHTR --quiet --nocolors --update && \
-	$RKHTR --check --nocolors --skip-keypress
+	$RKHTR --check --nocolors --skip-keypress --report-warnings-only
 	echo "" 
 fi
