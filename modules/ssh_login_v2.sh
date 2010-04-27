@@ -24,14 +24,13 @@ SSH_CNT_FILE="/tmp/$$.count_file.tmp"
 # dump source into temp file
 cat $SSH_AUTH_LOGS | fgrep "$SSH_TODAY" > $SSH_TMP_FILE 
 
-sortip() { 
-	sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4 
-}
+sortip () { sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4; }
 
 ssh_badauth_remote_summary() {
 # possible ssh scanners
 echo " * Unsuccessful attempted logins."
-fgrep "Invalid user " $SSH_TMP_FILE | awk '{print $10}' > $SSH_CNT_FILE
+echo " * NOTE: null (missing) login names will be visible here!"
+fgrep "Invalid user " $SSH_TMP_FILE | awk '{if (NF==10) print $10; else print $9}' > $SSH_CNT_FILE
 fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "but this does not map back to the address" \
 | awk '{print $12}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
 # there are two types of these BREAK IN lines
