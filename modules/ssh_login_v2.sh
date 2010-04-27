@@ -30,7 +30,8 @@ ssh_badauth_remote_summary() {
 # possible ssh scanners
 echo " * Unsuccessful attempted logins."
 echo " * NOTE: null (missing) login names will be visible here!"
-fgrep "Invalid user " $SSH_TMP_FILE | awk '{if (NF==10) print $10; else print $9}' > $SSH_CNT_FILE
+fgrep "Invalid user " $SSH_TMP_FILE \
+| awk '{if (NF==9) print $9; else print $10}' > $SSH_CNT_FILE
 fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "but this does not map back to the address" \
 | awk '{print $12}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
 # there are two types of these BREAK IN lines
