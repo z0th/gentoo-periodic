@@ -37,6 +37,8 @@ fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "but this does not map
 # there are two types of these BREAK IN lines
 fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "reverse mapping checking getaddrinfo for" \
 | awk '{print $7}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
+# bad logins seen by PAM
+fgrep "error: PAM: Authentication failure for" $SSH_TMP_FILE | awk '{print $15}' >> $SSH_CNT_FILE 
 # count them up
 cat $SSH_CNT_FILE | sortip | uniq -c 
 echo ""
@@ -44,10 +46,6 @@ echo ""
 # bad suids - have not found a good way to summarize these yet! 
 echo " * Unsucessful SUID attempts."
 fgrep "FAILED su for" $SSH_TMP_FILE
-echo ""
-# bad logins from permitted users
-echo " * Unsucessful PAM authentications."
-fgrep "error: PAM: Authentication failure for" $SSH_TMP_FILE
 echo ""
 }
 
