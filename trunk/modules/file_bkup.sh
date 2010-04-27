@@ -27,7 +27,8 @@ case ${FILE_BKUP_VERBOSE} in
 		CP="${FILE_BKUP_CP} --verbose"
 	;;
 	*)
-	continue
+		CP=${FILE_BKUP_CP}	
+		continue
 	;;
 esac 
 
