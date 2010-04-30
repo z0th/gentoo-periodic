@@ -120,17 +120,19 @@ the script for spacing and readability.
 For a newly written module to be able to read the config file, you must copy 
 these few lines of code into the top of the module.
 
-	# ----------------
-	# this code sources the config file! must be at the top of every module! 
-	my_name=$(basename $0)
-	# source config
-	if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
-		. $INSTALL_DIR/gentoo.periodic.conf 
-	else 
-		echo " * ERROR:" $my_name ": cannot source config!"
-		exit 0
-	fi
-	# ----------------
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+source_config() {
+my_name=$(basename $0)
+my_conf=$(find .. -name 'gentoo.periodic.conf')
+if [[ -n $my_conf ]]; then
+        source $my_conf
+else 
+	echo " * ERROR:" $my_name ": cannot source config!"
+	exit 0
+fi
+}
+source_config
+# -------------------
 
 This code references the script itself, as well as the configfile and install path.
 
