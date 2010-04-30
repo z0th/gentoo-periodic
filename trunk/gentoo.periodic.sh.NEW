@@ -24,6 +24,7 @@ self_ref() {
         INSTALL_DIR=$(dirname $FULL_PATH)
 	export FULL_PATH
 	export INSTALL_DIR 
+	SOURCED_FLAG="true"
 }
 
 # this actually executes the script modules
