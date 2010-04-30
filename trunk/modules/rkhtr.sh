@@ -4,6 +4,21 @@
 #
 # rkhtr.sh - check for presence of rootkits on the system.
 #
+
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+source_config() {
+my_name=$(basename $0)
+my_conf=$(find .. -name 'gentoo.periodic.conf')
+if [[ -n $my_conf ]]; then
+        source $my_conf
+else 
+	echo " * ERROR:" $my_name ": cannot source config!"
+	exit 0
+fi
+}
+source_config
+# -------------------
+
 RKHTR=`which rkhunter`
 
 run_rkhunter(){
