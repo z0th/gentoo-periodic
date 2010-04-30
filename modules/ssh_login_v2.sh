@@ -2,24 +2,19 @@
 #
 # ssh_login.sh - find unsuccessful and successful logins 
 
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+source_config() {
 my_name=$(basename $0)
-# source config
-if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
-	. $INSTALL_DIR/gentoo.periodic.conf 
+my_conf=$(find .. -name 'gentoo.periodic.conf')
+if [[ -n $my_conf ]]; then
+        source $my_conf
 else 
 	echo " * ERROR:" $my_name ": cannot source config!"
 	exit 0
 fi
-
-# verbose? summarize? 
-#SSH_SUMMARY="YES"
-# path to auth log
-#SSH_AUTH_LOGS="/var/log/auth.log /var/log/auth.log.0"
-
-# date and temp file 
-SSH_TODAY=`date --date=yesterday "+%b %_d"`
-SSH_TMP_FILE="/tmp/$$.login_check.tmp"
-SSH_CNT_FILE="/tmp/$$.count_file.tmp"
+}
+source_config
+# -------------------
 
 # dump source into temp file
 cat $SSH_AUTH_LOGS | fgrep "$SSH_TODAY" > $SSH_TMP_FILE 

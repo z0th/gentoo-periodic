@@ -4,17 +4,20 @@
 
 # file_bkup.sh - back up critical system files and directories.
 
-# ----------------
-# this code sources the config file! must be at the top of every module! 
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+source_config() {
 my_name=$(basename $0)
-# source config
-if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
-	. $INSTALL_DIR/gentoo.periodic.conf 
+my_conf=$(find .. -name 'gentoo.periodic.conf')
+if [[ -n $my_conf ]]; then
+        source $my_conf
 else 
 	echo " * ERROR:" $my_name ": cannot source config!"
 	exit 0
 fi
-# ----------------
+}
+source_config
+# -------------------
+
 
 
 # default files to back up.
