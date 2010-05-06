@@ -16,6 +16,9 @@ fi
 source_config
 # -------------------
 
+SSH_TMP_FILE="/tmp/$$.ssh_login.tmp"
+SSH_CNT_FILE="/tmp/$$.ssh_count.tmp"
+
 # dump source into temp file
 cat $SSH_AUTH_LOGS | fgrep "$SSH_TODAY" > $SSH_TMP_FILE 
 
