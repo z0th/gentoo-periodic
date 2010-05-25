@@ -3,34 +3,35 @@
 # gentoo.peroidic.sh - run scripts in given dirs. this is 
 # designed to run out of crontab. 
 
+# should ALWAYS ben installed to /usr/local/sbin
+install_path="/usr/local/sbin"
+
 # simple usage statement
-output_usage() {
-        echo " Usage: generate-reports [global-option]"
-        echo " Global Options:"
-        echo "   -c: run script"
-        echo "   -d: daily"
-        echo "   -w: weekly"
-        echo "   -m: monthly"
-        echo "   -y: yearly"
-        echo "   -s: security"
-        echo "   -h: this help message"
+output_usage() { cat << EOF
+ Usage: generate-reports [global-option]
+   Global Options:
+    -c: run script
+    -d: daily
+    -w: weekly
+    -m: monthly
+    -y: yearly
+    -s: security
+    -h: this help message
+EOF
 }
 
-# base directory where gentoo.periodic is installed, EXPORT.
-self_ref() {
-        # full path to this script.
-        FULL_PATH=$(readlink -f $0)
-        # path to install dir.
-        INSTALL_DIR=$(dirname $FULL_PATH)
-	export FULL_PATH
-	export INSTALL_DIR 
-	SOURCED_FLAG="true"
-}
+# source config file, before doing anything else
+if [ -r ${install_path}/gentoo.periodic/gentoo.periodic.conf ]; then 
+	source ${install_path}/gentoo.periodic/gentoo.periodic.conf
+else 
+	echo "gentoo.periodic.sh: ERROR! Cannot source config file!"
+	exit 1	
+fi
 
 # this actually executes the script modules
 run_script() {
-	for script in `ls -1 $INSTALL_DIR/$PERIOD | sort -n`; do
-		sh $PERIOD/$script >> $TMP_FILE
+	for script in `ls -1 ${install_path}/$PERIOD | sort -n`; do
+		sh ${install_path}/gentoo.periodic/$PERIOD/$script >> $TMP_FILE
 	done
 	# just so we know that we are done.
 	echo "" >> $TMP_FILE
@@ -38,14 +39,10 @@ run_script() {
 	echo "" >> $TMP_FILE	
 }
 
-# base directory where gentoo.periodic is installed, LOCAL.
-BASE_DIR=$(readlink -f $0|xargs dirname)
-export BASE_DIR
-
 # option list and script runner handling. 
 # first, dont do anything unless the config is present
-if [ -e $BASE_DIR/gentoo.periodic.conf ]; then
-	source $BASE_DIR/gentoo.periodic.conf 
+if [ -e ${install_path}/gentoo.periodic/gentoo.periodic.conf ]; then
+	source ${install_path}/gentoo.periodic/gentoo.periodic.conf 
 	# then handle options
 	while getopts c:dmwysh OPT; do
 		case "$OPT" in 
@@ -88,12 +85,8 @@ if [ -e $BASE_DIR/gentoo.periodic.conf ]; then
 		esac
 	done
 else
-	echo ""
-	echo " * ERROR: ./gentoo.periodic.conf MISSING!"
-	echo " * ERROR: ./gentoo.periodic.conf MISSING!"
-	echo " * ERROR: ./gentoo.periodic.conf MISSING!"
-	echo " "
-	exit 0
+	echo "gentoo.periodic.sh: ERROR! Cannot source config file!"
+	exit 1	
 fi
 
 # mailout and housekeeping.
