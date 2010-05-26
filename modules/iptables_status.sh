@@ -5,7 +5,7 @@
 # iptables-status.sh - output iptables current status
 #
 
-IPT=`which iptables` 
+IPT=$(which iptables) 
 
 if [[ -n $IPT ]]; then 
 	echo " * Current state of the firewall."
