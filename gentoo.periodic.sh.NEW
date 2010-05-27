@@ -3,8 +3,15 @@
 # gentoo.peroidic.sh - run scripts in given dirs. this is 
 # designed to run out of crontab. 
 
-# should ALWAYS ben installed to /usr/local/sbin
-install_path="/usr/local/sbin"
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -e /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf 
+else 
+	echo "gentoo.periodic.sh: ERROR! Cannot source config file!"
+	exit 1	
+fi
+# -------------------
 
 # simple usage statement
 output_usage() { cat << EOF
@@ -18,18 +25,10 @@ output_usage() { cat << EOF
 EOF
 }
 
-# source config file, before doing anything else
-if [ -e ${install_path}/gentoo-periodic/gentoo.periodic.conf ]; then 
-	source ${install_path}/gentoo-periodic/gentoo.periodic.conf 
-else 
-	echo "gentoo.periodic.sh: ERROR! Cannot source config file!"
-	exit 1	
-fi
-
 # this actually executes the script modules
 run_script() {
-	for script in `ls -1 ${install_path}/gentoo-periodic/$PERIOD | sort -n`; do
-		sh ${install_path}/gentoo-periodic/$PERIOD/$script >> $TMP_FILE
+	for script in $(ls -1 /usr/local/sbin/gentoo-periodic/$PERIOD | sort -n); do
+		sh /usr/local/sbin/gentoo-periodic/$PERIOD/$script >> $TMP_FILE
 	done
 	# just so we know that we are done.
 	echo "" >> $TMP_FILE
@@ -38,8 +37,6 @@ run_script() {
 }
 
 # option list and script runner handling. 
-# first, dont do anything unless the config is present
-# then handle options
 while getopts c:dmwysh OPT; do
 	case "$OPT" in 
 		c)      # run script manually 
