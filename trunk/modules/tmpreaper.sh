@@ -2,22 +2,15 @@
 
 # TMPEAPER.SH - alternate method of removing files from temporary directories.
 
-# am i enabled? 
-ENABLE="YES"
-# target directories 
-target="/tmp" 
-# days old
-grace_period=3d
-# verbosity
-verbosity=NO
-# test only, do not remove files
-test_only=YES
-# show deleted files
-show_rm=YES
-# maximum runtime in seconds, 0-55, 0 to disable.
-max_run=30
-# protect files, each quoted item is an individual shell pattern.
-protect_files=".X*-lock quota.user quota.group *.pid etc-update-* *lock"
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename 0$): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
 
 # locate tmpreaper on the system.
 tmpreap=$(which tmpreaper)
@@ -34,17 +27,17 @@ target_check=( $target )
 for dir in ${target_check[*]}; do 
 	check=$(expr match "$dir" '^/$\|/bin\|/boot\|/dev\|/etc\|/lib\|/proc\|/sbin\|/sys\|/usr')
 	if [ $check -gt 0 ]; then 
-		echo " * You should not be looking for temp files in $dir! Exiting." 
+		echo " $(basename $0): ERROR! You should not be looking for temp files in $dir! Exiting." 
 		echo ""
 		exit 1 
 	fi
 done
 
 # putting together the actual command based on given opts. 
-case "$ENABLE" in
+case "$tmpreaper_enable" in
 	[Yy][Ee][Ss])
 		# verbosity 
-		case "${verbosity}" in
+		case "${tmpreaper_verbosity}" in
 			[yY][eE][Ss])
 				verbose="--verbose"
 			;;
@@ -53,7 +46,7 @@ case "$ENABLE" in
 			;;
 		esac
 		# test only
-		case "${test_only}" in 
+		case "${tmpreaper_test_only}" in 
 			[yY][eE][Ss])
 				test="--test"
 			;; 
@@ -62,7 +55,7 @@ case "$ENABLE" in
 			;; 
 		esac
 		# show removed? 
-		case "${show_rm}" in 
+		case "${tmpreaper_show_rm}" in 
 			[yY][eE][Ss])
 				showrm="--showdeleted"
 			;; 
@@ -71,20 +64,20 @@ case "$ENABLE" in
 			;; 
 		esac 
 		# grace period
-		if [ -n ${grace_period} ]; then 
-			grace=${grace_period}
+		if [ -n ${tmpreaper_grace_period} ]; then 
+			grace=${tmpreaper_grace_period}
 		else
-			echo " * Setting of grace_period mandatory! Exiting!"
+			echo " $(basename $0): ERROR! Setting of tmpreaper_grace_period mandatory! Exiting!"
 			exit 1 
 		fi
 		# max run time	
-		if [ -n ${max_run} ]; then 
+		if [ -n ${tmpreaper_max_run} ]; then 
 			runtime="--runtime=$max_run"
 		else 
 			runtime=
 		fi
 		# file type protection	
-		if [ -n "${protect_files}" ]; then 
+		if [ -n "${tmpreaper_protect_files}" ]; then 
 			for expr in $protect_files; do 
 				protect="${protect} --protect $expr"
 			done
@@ -93,16 +86,16 @@ case "$ENABLE" in
 		fi
 
 		# executing tmpreaper command, with flags 
-		echo " * Tmpreaper is checking for stale files in $target..."
-		$tmpreap $verbose $test $showrm $runtime $protect $grace $target 	
+		echo " * Tmpreaper is checking for stale files in $tmpreaper_target..."
+		$tmpreap $verbose $test $showrm $runtime $protect $grace $tmpreaper_target 	
 		echo ""
 	;;
 
 	*)
 		# disabled, or broken
-		echo " * ENABLES is set to NO or invalid option."
-		echo " * tmpreaper module did not execute."
+		echo " $(basename $0): ERROR! tempreaper_enable is set to NO or invalid option!"
 		echo "" 
+		exit 1
 	;;
 esac
 
