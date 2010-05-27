@@ -72,7 +72,7 @@ case "$tmpreaper_enable" in
 		fi
 		# max run time	
 		if [ -n ${tmpreaper_max_run} ]; then 
-			runtime="--runtime=$max_run"
+			runtime="--runtime=$tmpreaper_max_run"
 		else 
 			runtime=
 		fi
