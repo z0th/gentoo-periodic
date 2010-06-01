@@ -9,7 +9,7 @@
 if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
 	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
 else
-	echo " $(basename 0$): ERROR! Cannot source config file!"
+	echo " $(basename $0): ERROR! Cannot source config file!"
 	exit 1
 fi
 # -------------------

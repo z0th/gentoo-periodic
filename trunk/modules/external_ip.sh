@@ -4,12 +4,22 @@
 # external_ip.sh - get and report the external ip address of a host.
 #
 
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
+
 MY_PID=$$
 
 # this page reports the ip, in plaintext.
-curl http://whatismyip.com/automation/n09230945.asp --silent --output /tmp/$MY_PID.external_ip.tmp
+curl $external_ip_site --silent --output /tmp/$MY_PID.external_ip.tmp
 # just to make sure, scrape out any html from the output.
-MY_EXT_IP=$(cat /tmp/$MY_PID.external_ip.tmp | sed -e 's#<[^>]*>##g' | head -n1) 
+MY_EXT_IP=$($external_ip_post-process_cmd) 
 
 # rm the temp file
 if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 

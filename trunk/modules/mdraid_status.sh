@@ -5,6 +5,16 @@
 #
 # raid_status.sh - check status of mdadm raid.
 
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+	else
+echo " $(basename 0$): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
+
 # raid devices to consider
 RAID_DEV="/dev/md1 /dev/md2"
 # be verbose?
@@ -18,7 +28,7 @@ raid_basic() {
 
 raid_detail() {
 # detail output
-for device in $RAID_DEV; do
+for device in $raid_status_devs; do
 	echo "    * Detail of $device:"
 	mdadm --detail $device
 	echo ""
@@ -27,20 +37,16 @@ done
 
 echo " * Current status of (mdadm) RAID devices on this host"
 # output based on options.
-case ${RAID_VERBOSE} in
+case ${raid_status_verbose} in
 	[yY][eE][sS])
 			 echo "    * Output of /proc/mdstat"
 			 raid_basic
 			 echo "    * Detail of RAID devices on this host"
 			 raid_detail
 	;;
-	[nN][oO])
+	*)
 			 echo "    * Output of /proc/mdstat"
 			 raid_basic
-	;;
-	*)
-			 echo "mdraid_status.sh: Invalid argument! RAID_VERBOSE permits YES/NO options only!"
-			 echo ""
 	;;
 esac
 

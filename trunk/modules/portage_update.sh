@@ -4,11 +4,21 @@
 #
 # portage-update.sh - update the portage tree
 #
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
+
 NOW=`date +%F\ %R`
 echo " * Updating the Portage tree: $NOW"
-/usr/bin/emerge --nospinner --color=n --quiet --sync
+$portage_update_cmd 
 echo " * Done!"
 echo " * Output of emerge --deep --update world"
-/usr/bin/emerge --nospinner --color=n --deep --update --pretend world 
+$portage_update_display  
 echo "" 
 

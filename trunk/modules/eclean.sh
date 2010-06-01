@@ -4,17 +4,15 @@
 #
 # eclean.sh - check to see if the portage tree needs cleaning
 
-# ----------------
-# this code sources the config file! must be at the top of every module! 
-my_name=$(basename $0)
-# source config
-if [ -e $INSTALL_DIR/gentoo.periodic.conf ]; then
-	. $INSTALL_DIR/gentoo.periodic.conf 
-else 
-	echo " * ERROR:" $my_name ": cannot source config!"
-	exit 0
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+		source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
 fi
-# ----------------
+# -------------------
 
 # check cleanlieness of portage tree
 echo " * Checking the cleanlieness of the Portage Tree..."
