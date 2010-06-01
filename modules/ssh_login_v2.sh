@@ -16,7 +16,7 @@ SSH_TMP_FILE="/tmp/$$.ssh_login.tmp"
 SSH_CNT_FILE="/tmp/$$.ssh_count.tmp"
 
 # dump source into temp file
-cat $SSH_AUTH_LOGS | fgrep "$SSH_TODAY" > $SSH_TMP_FILE 
+cat $ssh_check_auth_logs | fgrep "$SSH_TODAY" > $SSH_TMP_FILE 
 
 sortip () { sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4; }
 
@@ -76,7 +76,7 @@ echo ""
 }
 
 # call functions, if ssh_summary is yes, then summarize, otherwise verbose.
-case $SSH_SUMMARY in 
+case $ssh_check_summary in 
 	[yY][eE][sS])	
 		ssh_badauth_remote_summary
 		ssh_goodauth_verbose

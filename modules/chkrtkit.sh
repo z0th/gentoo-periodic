@@ -3,24 +3,17 @@
 # chkrtkit.sh - check for presence of rootkits on the system.
 
 # !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
-source_config() {
-my_name=$(basename $0)
-my_conf=$(find .. -name 'gentoo.periodic.conf')
-if [[ -n $my_conf ]]; then
-        source $my_conf
-else 
-	echo " * ERROR:" $my_name ": cannot source config!"
-	exit 0
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+		source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
 fi
-}
-source_config
 # -------------------
 
 # where is chkrootkit installed...
-CHKRK=$( whereis -b -B /usr/sbin/ -f chkrootkit|awk -F\: '{print $2}'|sed 's/^[ ]*//' )
-#
-# dir structure to start check at.
-chkrtkit_dir_start="/"
+CHKRK=$(which chkrootkit)
 
 # where the real work happens
 if [[ -z $CHKRK ]]; then 
