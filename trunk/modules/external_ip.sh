@@ -14,20 +14,26 @@ else
 fi
 # -------------------
 
-MY_PID=$$
+case "$external_ip_enable" in 
+	[yY][eE][sS])	# get the external IP
+		MY_PID=$$
 
-# this page reports the ip, in plaintext.
-curl $external_ip_site --silent --output /tmp/$MY_PID.external_ip.tmp
-# just to make sure, scrape out any html from the output.
-MY_EXT_IP=$($external_ip_post-process_cmd) 
+		# this page reports the ip, in plaintext.
+		curl $external_ip_site --silent --output /tmp/$MY_PID.external_ip.tmp
+		# just to make sure, scrape out any html from the output.
+		MY_EXT_IP=$($external_ip_post-process_cmd) 
 
-# rm the temp file
-if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
-	rm /tmp/$MY_PID.external_ip.tmp
-fi
+		# rm the temp file
+		if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
+			rm /tmp/$MY_PID.external_ip.tmp
+		fi
 
-# generate some output.
-echo " * Current external IP address." 
-echo "    $MY_EXT_IP"
-echo ""
-
+		# generate some output.
+		echo " * Current external IP address." 
+		echo "    $MY_EXT_IP"
+		echo ""
+	;;
+	*)	# do nothing.
+	exit 0
+	;;
+esac
