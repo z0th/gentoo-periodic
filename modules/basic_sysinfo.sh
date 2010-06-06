@@ -14,9 +14,17 @@ fi
 
 # disk usage
 disk_usage() {
-echo " * Current disk usage, all devices."
-df --all --human-readable
-echo ""
+case "basic_sysfinfo_disk_usage_virtual" in 
+	[Yy][Ee][Ss])	# host is a virtual server, only has /
+		echo " * Current disk usage, all devices."
+		df --human-readable /
+		echo ""
+	;;
+	[Nn][Oo])	# host is typical box with standard partitions
+		echo " * Current disk usage, all devices."
+		df --all --human-readable
+		echo ""
+	;;
 }
 
 # current user logins
