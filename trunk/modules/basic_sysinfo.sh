@@ -14,7 +14,7 @@ fi
 
 # disk usage
 disk_usage() { 
-case "basic_sysfinfo_disk_usage_virtual" in 
+case ${basic_sysfinfo_disk_usage_virtual} in 
 	[Yy][Ee][Ss])	# host is a virtual server, only has /
 		echo " * Current disk usage, all devices."
 		df --human-readable /

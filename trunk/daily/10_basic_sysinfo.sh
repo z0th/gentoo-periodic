@@ -1,15 +1,31 @@
 #!/bin/bash
 #
-# $Header: /usr/local/sbin/gentoo.periodic/modules/RCS/basic_sysinfo.sh,v 1.5 2008/06/11 13:22:49 root Exp $
-#
 # basic_sysinfo.sh - the basics of stuff you want to know.
-#
+
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
 
 # disk usage
-disk_usage() {
-echo " * Current disk usage, all devices."
-df --all --human-readable
-echo ""
+disk_usage() { 
+case ${basic_sysfinfo_disk_usage_virtual} in 
+	[Yy][Ee][Ss])	# host is a virtual server, only has /
+		echo " * Current disk usage, all devices."
+		df --human-readable /
+		echo ""
+	;;
+	[Nn][Oo])	# host is typical box with standard partitions
+		echo " * Current disk usage, all devices."
+		df --all --human-readable
+		echo ""
+	;;
+esac
 }
 
 # current user logins
@@ -40,10 +56,19 @@ ps ajx | fgrep SCREEN | grep -v "fgrep"
 echo ""
 }
 
-# call various things.
-disk_usage
-current_logins
-iface_stats
-listen_pids
-running_screens
+
+# if enabled, call various things.
+case $enable_basic_sysinfo in 
+	[Yy][Ee][Ss])
+		disk_usage
+		current_logins
+		iface_stats
+		listen_pids
+		running_screens
+	;;
+	*)
+		echo " * basic system info output disabled."
+		echo ""
+	;; 
+esac
 
