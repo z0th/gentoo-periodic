@@ -74,7 +74,15 @@ while getopts c:dmwysh OPT; do
 done
 
 # mailout and housekeeping.
-HOST=`hostname | tr [:lower:] [:upper:]`
+case ${HOSTNAME} in
+	[Ll][Oo][Nn][Gg])	# use full fqdn
+		HOST=$(hostname --long | tr [:lower:] [:upper:])
+	;;
+	*)	# use short hostname
+		HOST=$(hostname --short | tr [:lower:] [:upper:])
+	;;	
+esac
+
 if [[ -e $TMP_FILE ]]; then 
 	# loop thru the email address list
 	for eml in ${DST_EML}; do 
