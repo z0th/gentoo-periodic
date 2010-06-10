@@ -73,16 +73,18 @@ while getopts c:dmwysh OPT; do
 	esac
 done
 
-# mailout and housekeeping.
+# set hostname for header
 case ${HOSTNAME} in
-	[Ll][Oo][Nn][Gg])	# use full fqdn
-		HOST=$(hostname --long | tr [:lower:] [:upper:])
+	[Ll][Oo][Nn][Gg])
+		# use fqdn hostname
+		HOST=$( hostname --long | tr [:lower:] [:upper:] )
 	;;
-	*)	# use short hostname
-		HOST=$(hostname --short | tr [:lower:] [:upper:])
+	*)
+		# use short hostname
+		HOST=$( hostname --short | tr [:lower:] [:upper:] )
 	;;	
 esac
-
+# mailout and housekeeping.
 if [[ -e $TMP_FILE ]]; then 
 	# loop thru the email address list
 	for eml in ${DST_EML}; do 
