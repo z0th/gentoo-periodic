@@ -33,7 +33,8 @@ fgrep "POSSIBLE BREAK-IN ATTEMPT" $SSH_TMP_FILE | grep -v "reverse mapping check
 | awk '{print $7}' | sed 's/\[\|\]//g' >> $SSH_CNT_FILE
 # bad logins seen by PAM
 fgrep "error: PAM: Authentication failure for illegal user" $SSH_TMP_FILE | awk '{print $15}' >> $SSH_CNT_FILE 
-# count them up
+# count them up. at some point will need to sanitize this to
+# ensure 2nd field is indeed an ip (using awk)
 cat $SSH_CNT_FILE | sortip | uniq -c 
 echo ""
 #
