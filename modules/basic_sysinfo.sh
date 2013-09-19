@@ -22,7 +22,7 @@ case ${basic_sysfinfo_disk_usage_virtual} in
 	;;
 	[Nn][Oo])	# host is typical box with standard partitions
 		echo " * Current disk usage, all devices."
-		df --all --human-readable
+		df --local --human-readable
 		echo ""
 	;;
 esac
