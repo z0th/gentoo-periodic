@@ -19,7 +19,7 @@ case "$external_ip_enable" in
 		MY_PID="$$"
 
 		# this page reports the ip, in plaintext.
-		curl $external_ip_site --silent --output /tmp/$MY_PID.external_ip.tmp
+		curl $external_ip_site --silent --connect-timeout 30 --output /tmp/$MY_PID.external_ip.tmp
 		# just to make sure, scrape out any html from the output.
 		MY_EXT_IP=$( sed -e :a -e 's/<[^>]*>//g;/</N;//ba' /tmp/$MY_PID.external_ip.tmp )
 
