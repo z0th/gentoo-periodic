@@ -34,7 +34,7 @@ else
 	else
 		# first run message, then run rkhunter	
 		echo " ** If this is the first run of rkhunter, you will need to"
-		echo " ** ensure your system is clean, then run 'rkhunter --proupd'"
+		echo " ** ensure your system is clean, then run 'rkhunter --propupd'"
 		echo " ** to generate the rkhunter data file. You may also need to"
 		echo " ** configure system spesific options in /etc/rkhunter.conf!" 
 		run_rkunter			
