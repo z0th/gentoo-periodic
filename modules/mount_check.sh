@@ -13,6 +13,8 @@ else
 fi
 # -------------------
 
+# scrape_fstab: on missing mount, get mounts from fstab
+# emerge_mail: on missing mount, send a special mail
 
 case "$mount_check_enable" in 
 	[yY][eE][sS])  
@@ -20,16 +22,14 @@ case "$mount_check_enable" in
 		#mount_name"/full/path"
 		# mountpoint present? 0 = yes; 1 = no
 		
-		echo " * checking for mountpoints: ${mount_name} "
+		echo " * Checking for mountpoints: ${mount_name} "
 		# if mounted, do nothing, else error 
 		for point in $mount_name; do 
 			mount_check=$(mount | fgrep --quiet "${point}"; echo $?)
 			if [ $mount_check -eq "0" ]; then 
 				echo "     * INFO: ${point} is mounted."
-				echo "" 
 			else 
 				echo "     * WARNING: mountpoint ${point} is missing!"
-				echo "" 
 				# scrape fstab for the point
 				#scrape_fstab
 			fi	
