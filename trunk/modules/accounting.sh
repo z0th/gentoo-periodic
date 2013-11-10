@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# accounting.sh - generat monthly login accounting stats
+# accounting.sh - generate monthly login accounting stats
 
 # !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
 # source config file, before doing anything else
@@ -46,10 +46,11 @@ echo ""
 if [ -x /usr/bin/ac ]; then 
 		# do accounting
         accounting
-        exit 0
+	exit 0
 else 
         #print warning
         echo " * /usr/bin/ac does not exist!"
         echo " * You need to install sys-process/acct"
-        exit 1
+	exit 1
 fi
+
