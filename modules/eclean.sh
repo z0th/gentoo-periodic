@@ -20,7 +20,7 @@ echo " * running eclean-dist..."
 /usr/bin/eclean-dist --nocolor --pretend 2>&1 
 echo ""
 
-echo " * running eclean-pkg..." >> $TMP_FILE
+echo " * running eclean-pkg..."
 /usr/bin/eclean-pkg --nocolor --pretend 2>&1  
 echo ""
 
