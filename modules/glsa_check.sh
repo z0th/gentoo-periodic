@@ -15,11 +15,21 @@ else
 fi
 # -------------------
 
-glsa_cmd() { 
+glsa_cmd() {
 	$glsa_check_cmd  
 }
 
-echo " * Checking for local security issues..."
-glsa_cmd  
-echo ""
+case ${enable_glsa_check} in
+	[yY][eE][sS])
+		echo " * Checking for local security issues..."
+		glsa_cmd  
+		echo ""
+	;; 
+	*)
+		echo " * glsa_check.sh disabled."
+		echo ""
+		exit 1 
+	;;
+esac
 
+exit 0
