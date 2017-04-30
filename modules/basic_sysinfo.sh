@@ -35,12 +35,30 @@ w -f -s
 echo "" 
 }
 
+# local interface addressing
+echo " * Active local interface addresses."
+for iface in $( ip link show | fgrep "UP" | awk '{print $2}' | sed 's/:$//g' ); do
+	ip addr show $iface
+done
+echo "" 
+
 # interface stats
 iface_stats() {
-echo " * Interface statistics."
+
+# local interface addressing
+echo " * Active local interface addresses."
+for iface in $( ip link show | fgrep "UP" | awk '{print $2}' | sed 's/:$//g' ); do
+ip addr show $iface
+done
+echo ""
+
+echo " * Local interface statistics."
 netstat -in
 echo ""
 }
+
+
+
 
 # listening processes
 listen_pids() {
