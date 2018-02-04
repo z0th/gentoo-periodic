@@ -21,8 +21,8 @@ LYNIS=$( which lynis )
 DAT="/var/log/lynis-report.dat"
 
 run_lynis(){
-	$LYNIS --quiet --no-colors --check-update && \
-	$LYNIS --checkall --cronjob --quiet --no-colors --logfile ${lynis_log_dir}/${lynis_log_file} 
+	$LYNIS update info --no-colors && \
+	$LYNIS audit system --cronjob --quiet --no-colors --logfile ${lynis_log_dir}/${lynis_log_file} 
 }
 
 # a couple of simple checks
