@@ -21,13 +21,19 @@ case "$external_ip_enable" in
 		# this page reports the ip, in plaintext.
 		curl $external_ip_site --silent --connect-timeout 30 --output /tmp/$MY_PID.external_ip.tmp
 		# just to make sure, scrape out any html from the output.
-		MY_EXT_IP=$( sed -e :a -e 's/<[^>]*>//g;/</N;//ba' /tmp/$MY_PID.external_ip.tmp )
-
-		# rm the temp file
-		if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
-				rm /tmp/$MY_PID.external_ip.tmp
-		fi
-
+		MY_EXT_IP=$( sed -e :a -e 's/<[^>]*>//g;/</N;//ba' /tmp/$MY_PID.external_ip.tmp ) 
+		
+		if [[ -n $MY_EXT_IP ]]; then 
+			# rm the temp file
+			if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
+					rm /tmp/$MY_PID.external_ip.tmp
+			fi
+		else 
+			echo " * error: MY_EXT_IP has no value"
+			echo " * exiting!"
+			exit 1
+		fi 
+		
 		# generate some output.
 		echo " * Current external IP address." 
 		echo "   " $MY_EXT_IP
