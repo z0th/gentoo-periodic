@@ -19,6 +19,7 @@ fi
 LYNIS=$( which lynis )
 # dat file is always here
 DAT="/var/log/lynis-report.dat"
+PIDFILE="/var/run/lynis.pid" 
 
 run_lynis(){
 	$LYNIS update info --no-colors && \
@@ -32,6 +33,14 @@ checks() {
 		echo " * Please install app-forensics/lynis"
 		echo " * Exiting."
 		echo ""
+		exit 1 
+	fi
+
+	# check for pidfile 
+	if [ -f $PIDFILE ]; then 
+		echo " * A lynis PID file exists at $PIDFILE."
+		echo " * You will need to clear the file before running lynis."
+		echo "" 
 		exit 1 
 	fi
 
