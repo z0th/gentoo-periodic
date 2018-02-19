@@ -12,6 +12,20 @@ else
 fi
 # -------------------
 
+# checking to ensure that the tmpreaper.conf has been configured.
+check_cfg() {
+	conf=$( fgrep -q "SHOWWARNING=false" $tmpreaper_cfg; echo $? )
+	if [[ -f $tmpreaper_cfg ]]; then 
+			if [ ${conf} -eq "1" ]; then 
+				echo " * Your $tmpreaper_cfg has not been configured."
+				echo " * You need to set SHOWWARNING to FALSE in $tmpreaper_cfg."
+				cfg_pass="false"
+				echo "" 
+				exit 1 
+			fi
+	fi 
+}
+
 # locate tmpreaper on the system.
 tmpreap=$(which tmpreaper)
 if [ -z $tmpreap ]; then 
@@ -32,6 +46,9 @@ for dir in ${target_check[*]}; do
 		exit 1 
 	fi
 done
+
+# check the config, exit on error
+check_cfg && 
 
 # putting together the actual command based on given opts. 
 case "$tmpreaper_enable" in
@@ -85,6 +102,9 @@ case "$tmpreaper_enable" in
 			protect=
 		fi
 
+		# check the config
+		check_cfg
+
 		# executing tmpreaper command, with flags 
 		echo " * Tmpreaper is checking for stale files in $tmpreaper_target..."
 		$tmpreap $verbose $test $showrm $runtime $protect $grace $tmpreaper_target 	
@@ -92,7 +112,8 @@ case "$tmpreaper_enable" in
 	;;
 
 	*)
-		# disabled, or broken
+		# check config,  disabled or broken
+		check_cfg
 		echo " $(basename $0): ERROR! tempreaper_enable is set to NO or invalid option!"
 		echo "" 
 		exit 1
