@@ -14,13 +14,34 @@ else
 fi
 # -------------------
 
-# check cleanlieness of portage tree
-echo " * Checking the cleanlieness of the Portage Tree..."
-echo " * running eclean-dist..." 
-/usr/bin/eclean-dist --nocolor --pretend 2>&1 
-echo ""
+if [[ ${enable_eclean_dist} = [yY][eE][sS] ]] || [[ ${enable_eclean_pkg} = [yY][eE][sS] ]]; then 
 
-echo " * running eclean-pkg..."
-/usr/bin/eclean-pkg --nocolor --pretend 2>&1  
-echo ""
+	echo " * Running package tree clean-up checks." 
+	echo " * Checks only, no files are removed!" 
 
+	case ${enable_eclean_dist} in
+		[yY][eE][sS])
+			echo " * Running eclean-dist." 
+			/usr/bin/eclean-dist --nocolor --pretend 2>&1 
+			echo ""
+			;;
+		*)
+			echo " * eclean-dist disabled." 
+			echo "" 
+		;;
+	esac
+
+	case ${enable_eclean_pkg} in
+		[yY][eE][sS])
+			echo " * running eclean-pkg."
+			/usr/bin/eclean-pkg --nocolor --pretend 2>&1  
+			echo ""
+		;;
+		*) 
+			echo " * eclean-pkg disabled."
+			echo ""
+		;;
+	esac
+fi 
+
+exit 0
