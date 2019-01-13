@@ -16,13 +16,15 @@ else
 fi
 # -------------------
 
-LYNIS=$( which lynis )
 # dat file is always here
 DAT="/var/log/lynis-report.dat"
+LYNIS=$(which lynis)
 
 run_lynis(){
-	$LYNIS update info --cronjob --quiet --no-colors --logfile ${lynis_log_dir}/${lynis_log_file} && \ 
-	$LYNIS audit system --cronjob --quiet --no-colors --logfile ${lynis_log_dir}/${lynis_log_file} 
+	$( which lynis ) update info --cronjob --quiet --no-colors \
+		--logfile ${lynis_log_dir}/${lynis_log_file} 2>&1 && 
+	$( which lynis ) audit system --cronjob --quiet --no-colors \
+		--logfile ${lynis_log_dir}/${lynis_log_file} 2>&1 
 }
 
 # a couple of simple checks
