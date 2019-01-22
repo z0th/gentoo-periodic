@@ -19,6 +19,6 @@ echo " * Updating the Portage tree: $NOW"
 $portage_update_cmd 
 echo " * Done!"
 echo " * Output of emerge --deep --update world"
-$portage_update_display  
+$portage_update_display 
 echo "" 
 
