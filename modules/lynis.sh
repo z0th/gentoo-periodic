@@ -48,10 +48,10 @@ checks() {
 		chmod u+w $lynis_log_dir/$lynis_log_file
 	fi
 
-	# are there lock or tmp files more than N days old? likey stale.
+	# are there lock or tmp files more than N days old? likely stale.
 	LOCKS="/var/run/lynis.pid /tmp/lynis.??????????"
 	for file in $LOCKS; do
-		find $file -atime +3 -exec echo "Stale {} found. Deleting." \; -delete
+		find $file -atime +3 -exec echo "Stale {} found. Deleting." \; -delete 2> /dev/null
 	done
 }
 
