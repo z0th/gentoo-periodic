@@ -16,13 +16,15 @@ fi
 # -------------------
 
 glsa_cmd() {
-	$glsa_check_cmd  
+	exec $glsa_check_cmd  
 }
 
 case ${enable_glsa_check} in
 	[yY][eE][sS])
 		echo " * Checking for local security issues..."
-		glsa_cmd  
+		scratch_file=$(tempfile)	
+		glsa_cmd | tee -a $scratch_file 
+		cat $scratch_file && rm $scratch_file 
 		echo ""
 	;; 
 	*)
