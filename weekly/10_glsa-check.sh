@@ -4,11 +4,34 @@
 # 
 # glsa-check.sh - check for security issues
 #
-glsa_cmd() { 
-	glsa-check -n --list affected 2>&1 
+
+# !! THIS MUST BE PRESENT AT THE TOP OF EACH SCRIPT MODULE !!
+# source config file, before doing anything else
+if [ -r /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf ]; then 
+	source /usr/local/sbin/gentoo-periodic/gentoo.periodic.conf
+else
+	echo " $(basename $0): ERROR! Cannot source config file!"
+	exit 1
+fi
+# -------------------
+
+glsa_cmd() {
+	exec $glsa_check_cmd  
 }
 
-echo " * Checking for local security issues..."
-glsa_cmd  
-echo ""
+case ${enable_glsa_check} in
+	[yY][eE][sS])
+		echo " * Checking for local security issues..."
+		scratch_file=$(tempfile)	
+		glsa_cmd | tee -a $scratch_file 
+		cat $scratch_file && rm $scratch_file 
+		echo ""
+	;; 
+	*)
+		echo " * glsa_check.sh disabled."
+		echo ""
+		exit 1 
+	;;
+esac
 
+exit 0

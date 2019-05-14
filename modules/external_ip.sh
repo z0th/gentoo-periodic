@@ -22,24 +22,43 @@ case "$external_ip_enable" in
 		curl $external_ip_site --silent --connect-timeout 30 --output /tmp/$MY_PID.external_ip.tmp
 		# just to make sure, scrape out any html from the output.
 		MY_EXT_IP=$( sed -e :a -e 's/<[^>]*>//g;/</N;//ba' /tmp/$MY_PID.external_ip.tmp ) 
+	
+		# if the file exists
+		if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
+			
+			# and if the var has value	
+			if [[ -n $MY_EXT_IP ]]; then 
+				
+				# then generate output and rm the temp file 
+				echo " * Current external IP address." 
+				echo "   " $MY_EXT_IP
+				echo ""
+				
+				if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
+						rm /tmp/$MY_PID.external_ip.tmp
+				fi
+				
 		
-		if [[ -n $MY_EXT_IP ]]; then 
-			# rm the temp file
-			if [[ -f /tmp/$MY_PID.external_ip.tmp ]]; then 
-					rm /tmp/$MY_PID.external_ip.tmp
-			fi
+			else 
+			
+				echo " * error: MY_EXT_IP has no value"
+				echo " * exiting!"
+				exit 1
+			
+			fi 
+		
 		else 
-			echo " * error: MY_EXT_IP has no value"
-			echo " * exiting!"
+	
+			echo "$MY_PID.external_ip.tmp is missing." 
 			exit 1
+
 		fi 
-		
-		# generate some output.
-		echo " * Current external IP address." 
-		echo "   " $MY_EXT_IP
-		echo ""
+
 	;;
 	*)	# do nothing.
-		exit 0
+		echo "This should probably never be seen." 	
 	;;
 esac
+
+exit 0
+
