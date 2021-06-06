@@ -16,9 +16,9 @@ fi
 
 NOW=`date +%F\ %R`
 echo " * Updating the Portage tree: $NOW"
-$portage_update_cmd 
+$portage_update_cmd 1>/dev/null 
 echo " * Done!"
 echo " * Output of emerge --deep --update world"
-$portage_update_display 
+$portage_update_display 2>&1  
 echo "" 
 
