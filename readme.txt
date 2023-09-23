@@ -145,8 +145,5 @@ it only looks at logs. I wanted something that would give me a much more broad
 overview of system status. 
 
 Q: Why is there no config file?
-A: There will be. I'm almost done the process of porting the runner script and 
-the various modules over to a format that reads a config file!
- 
-something that did more than just loo
+A: There will be.... and now there is!
 
